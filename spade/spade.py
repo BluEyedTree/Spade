@@ -68,7 +68,7 @@ def intersection(node_a, node_b):
     poslist_a_b = {}
 
     # The second condition
-    # A letter from node_to_be_extended must be before a letter in node_to_extend_with
+    # A letter from node_a must be before a letter in node_b
     for sequence in list(node_a.poslist.keys()):
         first_occurance_noda_a = node_a.poslist.get(sequence)[0]
         all_occurance_node_b = node_b.poslist.get(sequence)
