@@ -15,26 +15,6 @@
 #     pass
 
 
-def spade(current_sequence_position_tuples, min_support, previous_sequence_position_tuples, k_or_depth):
-    pass
-
-
-def spade_intersect(poslist_of_sequence_to_be_extended, poslist_of_sequence_to_be_used_for_extension):
-    """
-    Poslists are arrays of tuples related to a given sequence.
-    They are of the form... word: [numbers]. Where word is a
-    word in the database and [numbers] lists possible placements of the related sequence.
-
-    This function takes two poslists (a,b) and outputs a poslist for sequence_a + sequence_b[k].
-
-    :param poslist_of_sequence_to_be_extended:
-    :param poslist_of_sequence_to_be_used_for_extension:
-    :return: poslist_of_extended_sequence
-    """
-
-    pass
-
-
 # tree implementation
 class Node(object):
     def __init__(self, sequence, poslist):
@@ -89,37 +69,46 @@ def init_spade(word_database, min_support):
         init_node.add_child(new_node)
         init_generation.append(new_node)
     return init_generation
+
+
 '''
 node_a is to extended
 node_b is extending node_a
 
 '''
+
+
 def intersection(node_a, node_b):
-    #The first condition is that Noda_A and Node_B are from the same sequence
+    # The first condition is that Noda_A and Node_B are from the same sequence
     assert (node_a.parent == node_b.parent), "Function was called with nodes of different parents"
 
     poslist_a_b = {}
 
-    #The second condition
-    #A letter from node_to_be_extended must be before a letter in node_to_extend_with
-    for sequence in  list(node_a.poslist.keys()):
+    # The second condition
+    # A letter from node_to_be_extended must be before a letter in node_to_extend_with
+    for sequence in list(node_a.poslist.keys()):
         first_occurance_noda_a = node_a.poslist.get(sequence)[0]
         all_occurance_node_b = node_b.poslist.get(sequence)
         occurances_node_a_b = []
-        #Ensure that node_b has the sequence
-        if(all_occurance_node_b is not None):
+        # Ensure that node_b has the sequence
+        if (all_occurance_node_b is not None):
             for occurance_node_b in all_occurance_node_b:
-                if(occurance_node_b > first_occurance_noda_a):
+                if (occurance_node_b > first_occurance_noda_a):
                     occurances_node_a_b.append(occurance_node_b)
-        #Ensure that condition two was satisfied, and occurances_node_a_b is not empty
-        if(len(occurances_node_a_b) >0 ):
+        # Ensure that condition two was satisfied, and occurances_node_a_b is not empty
+        if (len(occurances_node_a_b) > 0):
             poslist_a_b[sequence] = occurances_node_a_b
 
     return poslist_a_b
 
 
 def extend_sequence(node_a, node_b):
-    pass
+    # The first condition is that Noda_A and Node_B are from the same sequence
+    assert (node_a.parent == node_b.parent), "Function was called with nodes of different parents"
+
+    sequence_a_b = node_a.sequence + node_b.sequence[-1]
+
+    return sequence_a_b
 
 
 '''
@@ -143,3 +132,50 @@ Example output:
 def calculate_support(poslist_of_substring):
     return len(list(poslist_of_substring.keys()))
 '''
+
+def spade(current_generation, min_support, history, k_or_depth):
+    history[k_or_depth] = current_generation
+    next_generation = []
+
+    for node in current_generation:
+        for sibling_node in node.parent.children:
+            new_sequence = extend_sequence(node, sibling_node)
+            new_poslist = intersection(node, sibling_node)
+            if len(new_poslist) >= min_support:
+                new_node = Node(sequence=new_sequence, poslist=new_poslist)
+                node.add_child(new_node)
+                next_generation.append(new_node)
+
+
+    if len(next_generation) > 0:
+        return spade(next_generation, min_support, history, k_or_depth+1)
+    else:
+        return history
+
+def run_spade(word_database, min_support):
+    pass
+
+
+def main():
+    # TODO: replace with user input
+    # word_database = ["abba", "ccd", "abc"]
+    word_database = ["CAGAAGT",
+                     "TGACAG",
+                     "GAAGT"
+                     ]
+
+
+    min_support = 3
+
+    init_generation = init_spade(word_database, 3)
+    results = {}
+
+    k = 0
+
+    # spade(init_generation, min_support, results, k)
+    results = spade(init_generation, min_support, results, k)
+    a = "a"
+
+
+if __name__ == '__main__':
+    main()

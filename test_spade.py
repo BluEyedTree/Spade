@@ -49,6 +49,21 @@ def test_intersection():
 
     assert output == {0: [2, 5], 1: [5], 2: [3]}
 
+def test_intersection_no_overlap():
+    # (self, sequence, poslist)
+    parent_of_a_g = Node("asdasd", {})
+
+    node_a_poslist = {0: [8]}
+    node_a = Node("a", node_a_poslist)
+    parent_of_a_g.add_child(node_a)
+
+    node_g_poslist = {8: [1]}
+    node_g = Node("g", node_g_poslist)
+
+    parent_of_a_g.add_child(node_g)
+    output = intersection(node_a, node_g)
+    assert output == {}
+
 def test_extend_sequence():
     node_a_poslist = {0: [1, 3, 4], 1: [2, 4], 2: [1, 2]}
     node_a = Node("a", node_a_poslist)
@@ -56,8 +71,8 @@ def test_extend_sequence():
     node_g_poslist = {0: [2, 5], 1: [1, 5], 2: [0, 3]}
     node_g = Node("g", node_g_poslist)
 
-
-    extend_sequence()
+    result = "ag"
+    assert "ag" == extend_sequence(node_a, node_g)
 
 
 def calculate_support():
