@@ -14,7 +14,7 @@ def test_init_poslist():
     assert init_poslist(input_letter="a", word_database=words) == {0: [0, 3], 1: [], 2: [0]}
 
 
-def test_init_spade__init_poslists():
+def test_init_spade_init_poslists():
     words = ["abba", "ccd", "abc"]
     current_generation = init_spade(word_database=words, min_support=2)
     for node in current_generation:
