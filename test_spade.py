@@ -49,6 +49,7 @@ def test_intersection():
 
     assert output == {0: [2, 5], 1: [5], 2: [3]}
 
+
 def test_intersection_no_overlap():
     # (self, sequence, poslist)
     parent_of_a_g = Node("asdasd", {})
@@ -64,6 +65,7 @@ def test_intersection_no_overlap():
     output = intersection(node_a, node_g)
     assert output == {}
 
+
 def test_extend_sequence():
     node_a_poslist = {0: [1, 3, 4], 1: [2, 4], 2: [1, 2]}
     node_a = Node("a", node_a_poslist)
@@ -75,10 +77,13 @@ def test_extend_sequence():
     assert "ag" == extend_sequence(node_a, node_g)
 
 
-def calculate_support():
-    poslist = {}
-    poslist[1] = [1, 2, 3]
-    poslist[2] = [1, 3]
-    poslist[3] = [2]
-    answer = 3
-    assert calculate_support(poslist_of_substring=poslist) == answer
+
+def test_run_spade_paper_example_last_layer():
+    word_database = ["CAGAAGT",
+                     "TGACAG",
+                     "GAAGT"
+                     ]
+    min_support = 3
+
+    assert run_spade(word_database, min_support)[3][
+        0].sequence == "GAAG", "The sequence of the first node of the fourth layer should be 'GAAG'"

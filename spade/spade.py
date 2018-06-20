@@ -1,19 +1,3 @@
-# def GSP(table_of_words, chars, min_support):
-#     pass
-
-# def gps_calculate_support(table_of_words, sequence):
-#     """used for spade just for right now"""
-#
-#     support = 0
-#     for word in table_of_words:
-#         if sequence in word:
-#             support += 1
-#     return support
-
-
-# def gsp_extend_prefix_tree(array_of_bottom_nodes):
-#     pass
-
 
 # tree implementation
 class Node(object):
@@ -72,11 +56,10 @@ def init_spade(word_database, min_support):
 
 
 '''
-node_a is to extended
+node_a is to extend
 node_b is extending node_a
 
 '''
-
 
 def intersection(node_a, node_b):
     # The first condition is that Noda_A and Node_B are from the same sequence
@@ -111,27 +94,6 @@ def extend_sequence(node_a, node_b):
     return sequence_a_b
 
 
-'''
-"""
-Calculates the support of a given substring.
-The support is the number of distinct sequences that the substring occurs. Or the length of the poslist.
-Input:
-A poslist of a substring
-
-Example input:
-{1:[1,2,3]}
-
-Output:
-Integer
-
-Example output:
-1
-"""
-
-
-def calculate_support(poslist_of_substring):
-    return len(list(poslist_of_substring.keys()))
-'''
 
 def spade(current_generation, min_support, history, k_or_depth):
     history[k_or_depth] = current_generation
@@ -153,7 +115,10 @@ def spade(current_generation, min_support, history, k_or_depth):
         return history
 
 def run_spade(word_database, min_support):
-    pass
+    init_generation = init_spade(word_database, min_support)
+    results = spade(init_generation, min_support, history={}, k_or_depth=0)
+    return results
+
 
 
 def main():
@@ -167,14 +132,24 @@ def main():
 
     min_support = 3
 
-    init_generation = init_spade(word_database, 3)
-    results = {}
+    results = run_spade(word_database, min_support)
+    for layer_num in results:
+        layer = results[layer_num]
+        print()
+        print("Layer: " + str(layer_num))
+        print()
+        for node in layer:
+            print(node.sequence)
 
-    k = 0
 
-    # spade(init_generation, min_support, results, k)
-    results = spade(init_generation, min_support, results, k)
-    a = "a"
+            for item in node.poslist:
+                print("\t"+ str(item), end=' \t')
+
+                print(node.poslist[item])
+
+
+
+
 
 
 if __name__ == '__main__':
