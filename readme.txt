@@ -2,7 +2,7 @@ Example input:
 ["CAGAAGT", "TGACAG","GAAGT"]
 
 
-Example output (the result is a tree, but here is the "pretty" print representation
+Example output: (the result is a tree, but here is the "pretty" print representation
 
 Layer: 0
 
